@@ -20,7 +20,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                // Add deployment steps here
+                // Add deployment steps to staging here
                 sh 'echo "Deploying to staging..."'
             }
         }
@@ -28,15 +28,12 @@ pipeline {
         stage('Deploy to Production') {
             when {
                 branch 'main'
-                // Optionally, you can include additional conditions
-                // such as successful builds, specific users, etc.
             }
             steps {
                 // Pause the pipeline and wait for manual input
-                input "Deploy to production?"
+                input message: 'Deploy to production?', submitter: 'mishra'
                 
                 // Add deployment steps to production here
-                // These steps will only execute if the input is approved
                 sh 'echo "Deploying to production..."'
             }
         }
