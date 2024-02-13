@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Add checkout SCM step here
                 checkout scm
             }
         }
@@ -23,6 +22,22 @@ pipeline {
             steps {
                 // Add deployment steps here
                 sh 'echo "Deploying to staging..."'
+            }
+        }
+        
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+                // Optionally, you can include additional conditions
+                // such as successful builds, specific users, etc.
+            }
+            steps {
+                // Pause the pipeline and wait for manual input
+                input "Deploy to production?"
+                
+                // Add deployment steps to production here
+                // These steps will only execute if the input is approved
+                sh 'echo "Deploying to production..."'
             }
         }
     }
