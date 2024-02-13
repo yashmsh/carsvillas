@@ -4,13 +4,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Add checkout SCM step here
                 checkout scm
             }
         }
         
         stage('Build and Test') {
             steps {
-                // Add your build and test commands here
+                // Add build and test steps here
+                sh 'echo "Building and testing..."'
             }
         }
         
@@ -19,7 +21,8 @@ pipeline {
                 branch 'main'
             }
             steps {
-                // Add deployment to staging environment here
+                // Add deployment steps here
+                sh 'echo "Deploying to staging..."'
             }
         }
     }
