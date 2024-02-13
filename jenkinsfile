@@ -1,41 +1,52 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout scm
+                sh 'echo building'
+                sh 'cp env.example .env'
+                sh 'pip3 install -r requirements.txt'
             }
         }
-        
-        stage('Build and Test') {
+        stage('Test') {
             steps {
-                // Add build and test steps here
-                sh 'echo "Building and testing..."'
+               sh 'echo testing'
+               sh 'python3 manage.py test'
             }
         }
-        
-        stage('Deploy to Staging') {
-            when {
-                branch 'main'
-            }
+
+        stage('Deploy to staging') {
             steps {
-                // Add deployment steps to staging here
-                sh 'echo "Deploying to staging..."'
+                sh 'echo deploying'
+                // stage-vm credential
+                sh 'ssh stage@ 103.15.67.179  -o StrictHostKeyChecking=no " bash /var/www/Dev-project/scripts/deploy.sh "'
             }
         }
-        
-        stage('Deploy to Production') {
-            when {
-                branch 'main'
+
+        stage('Deploy to production') {
+            input {
+                message "Shall we deploy to production sir?"
+                ok "Yes please"
             }
             steps {
-                // Pause the pipeline and wait for manual input
-                input message: 'Deploy to production?', submitter: 'mishra'
-                
-                // Add deployment steps to production here
-                sh 'echo "Deploying to production..."'
+                sh 'echo deploying'
+                // production-vm credentials
+                sh 'ssh yashjenkins@20.211.41.97 -o StrictHostKeyChecking=no " bash /var/www/Dev-project/scripts/deploy.sh "'
             }
         }
+
+    }
+    // apply to the whole pipeline
+
+    post {
+     // send email notification the specicied addresses if the build fails
+        failure {  
+             mail bcc: '', body: "<b>Failed Jenkins Build</b><br>Project: ${env.JOB_NAME} \
+             <br>Build Number: ${env.BUILD_NUMBER} <br> URL of the build: ${env.BUILD_URL}", cc: '', \
+             charset: 'UTF-8', from: 'jenkins@jenkins.test', mimeType: 'text/html', replyTo: 'put@youremail.com', \
+             subject: "ERROR CI: Project name -> ${env.JOB_NAME}", \
+             to: "myashvardhan2@gmail.com";  \
+         }
     }
 }
