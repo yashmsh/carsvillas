@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sh 'echo deploying'
                 // stage-vm credential
-                sh 'ssh stage@ 103.15.67.179  -o StrictHostKeyChecking=no " bash /var/www/Dev-project/scripts/deploy.sh "'
+                sh 'ssh stage@103.15.67.179  -o StrictHostKeyChecking=no " bash /var/www/Dev-project/scripts/deploy.sh "'
             }
         }
 
