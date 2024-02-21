@@ -1,19 +1,12 @@
 pipeline {
     agent any
+
     stages {
-        stage('Example Build') {
+        stage('Build') {
             steps {
-                echo 'Hello World'
+                echo 'Building website...'
+                // Add commands to build your HTML-based website, if any
+                git branch: 'main', url: https://github.com/yashmsh/carsvillas.git
+                // This stage might involve copying files, compiling templates, etc.
             }
         }
-        stage('Example Deploy') {
-            when {
-                branch 'production'
-                environment name: 'DEPLOY_TO', value: 'production'
-            }
-            steps {
-                echo 'Deploying'
-            }
-        }
-    }
-}
