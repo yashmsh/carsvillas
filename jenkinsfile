@@ -1,17 +1,20 @@
 pipeline {
-    agent any
-
+    agent any 
     stages {
-        stage('Build') {
+        stage('Build') { 
             steps {
-                // Add commands to build your project
-                sh 'echo "Building project..."'
-                sh 'npm install' // Example: If you're using Node.js
-                sh 'npm run build' // Example: Build step for Node.js project
+                // 
             }
         }
-        // Other stages like Test and Deploy would go here
+        stage('Test') { 
+            steps {
+                // 
+            }
+        }
+        stage('Deploy') { 
+            steps {
+                // 
+            }
+        }
     }
-
-    // Post-build actions would go here
 }
